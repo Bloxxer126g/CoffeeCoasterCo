@@ -1,0 +1,56 @@
+:root {
+    --background: hsl(278, 100%, 96%);
+    --font: "Plein", serif;
+    --topbar-background: hsl(279, 48%, 85%);
+}
+
+body {
+    background-color: var(--background);
+}
+
+
+h1,h2,h3,h4,p,div,button{
+    font-family: var(--font);
+}
+
+#Topbar {
+    height: 7%;
+    width: 100%;
+    left: 0%;
+    top: 0%;
+    display: flex;
+    position: fixed;
+    background-color: var(--topbar-background);
+    justify-content: right;
+    align-items: center;
+    z-index: 999;
+}
+
+#Title {
+    position: fixed;
+    left: 3%;
+    font-size: 2vh;
+}
+
+#CenterContent {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    height: 80%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: 0.1s;
+}
+
+.TopbarNavigator {
+    height: 100%;
+    width: 3%;
+    background-color: hsla(0, 0%, 0%, 0);
+    border: none;
+    transition: 0.2s;
+}
+
+.TopbarNavigator:hover {
+    background-color: hsla(0, 0%, 0%, 0.171);
+}
