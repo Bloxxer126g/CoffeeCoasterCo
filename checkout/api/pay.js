@@ -1,33 +1,35 @@
-import express from "express";
 import crypto from "crypto";
 import { Client, Environment } from "square";
-
-const app = express();
-app.use(express.json());
 
 const client = new Client({
   accessToken: process.env.SANDBOX_ACCESS,
   environment: Environment.Sandbox
 });
 
-app.post("/pay", async (req, res) => {
-  const { token } = req.body;
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
   try {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(400).json({ error: "Missing token" });
+    }
+
     const payment = await client.paymentsApi.createPayment({
       sourceId: token,
       idempotencyKey: crypto.randomUUID(),
       amountMoney: {
-        amount: 5000,
+        amount: 500,
         currency: "GBP"
       }
     });
 
-    res.json(payment);
+    return res.status(200).json(payment);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
-});
-
-app.listen(3000, () => console.log("Server running on port 3000"));
+}

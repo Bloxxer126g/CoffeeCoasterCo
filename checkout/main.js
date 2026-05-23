@@ -12,11 +12,12 @@ async function main() {
 
         if (result.status === "OK") {
           // Send token to backend
-          const res = await fetch("/pay", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token: result.token })
-          });
+            const res = await fetch("/api/pay", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: result.token })
+            });
+
 
           const data = await res.json();
           console.log(data);
