@@ -6,6 +6,9 @@ const client = new Client({
   environment: Environment.Sandbox
 });
 
+console.log("SANDBOX_ACCESS:", process.env.SANDBOX_ACCESS ? "LOADED" : "MISSING");
+
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
