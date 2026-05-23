@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 
 const client = new Client({
-  accessToken: process.env.PAYMENT_ACCESS,
+  accessToken: process.env.SANDBOX_ACCESS,
   environment: Environment.Sandbox
 });
 

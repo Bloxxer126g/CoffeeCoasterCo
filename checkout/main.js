@@ -1,7 +1,7 @@
 async function main() {
       const payments = Square.payments(
-        "sq0idp-VuEJ7b1oBA7gWVKHfYOzww",
-        "LXDKNXD5CK9XM"
+        "sandbox-sq0idb-9r9UYTXziI5RghI_mA23Yg",
+        "LXDKNXD5CK9XMLJV7PE945RP7P"
       );
 
       const card = await payments.card();
