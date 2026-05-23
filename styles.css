@@ -1,7 +1,7 @@
 :root {
-    --background: hsl(278, 100%, 96%);
+    --background: hsl(0, 0%, 100%);
     --font: "Plein", serif;
-    --topbar-background: hsl(279, 48%, 85%);
+    --topbar-background: hsl(0, 0%, 89%);
 }
 
 body {
@@ -32,6 +32,12 @@ h1,h2,h3,h4,p,div,button{
     font-size: 2vh;
 }
 
+#CenterTitle {
+    position: sticky;
+    font-size: 4vh;
+    top: 8%;
+}
+
 #CenterContent {
     display: flex;
     position: fixed;
@@ -45,7 +51,7 @@ h1,h2,h3,h4,p,div,button{
 
 .TopbarNavigator {
     height: 100%;
-    width: 3%;
+    width: 80px;
     background-color: hsla(0, 0%, 0%, 0);
     border: none;
     transition: 0.2s;
@@ -53,4 +59,25 @@ h1,h2,h3,h4,p,div,button{
 
 .TopbarNavigator:hover {
     background-color: hsla(0, 0%, 0%, 0.171);
+}
+
+.ItemDisplay {
+    height: 20vh;
+    aspect-ratio: 192/108;
+    background-color: var(--topbar-background);
+    display: flex;
+    font-size: 3vh;
+    margin: 10px;
+    border-radius: 2.2vw;
+}
+
+.ItemImage {
+    width: 100%;
+    margin: 10px;
+    transition: 0.3s;
+    border-radius: 2vw;
+}
+
+.ItemImage:hover {
+    filter: brightness(70%);
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Square Payment</title>
+  <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+</head>
+<body>
+
+  <h2>Pay £10</h2>
+
+  <div id="card-container"></div>
+  <button id="pay-btn">Pay</button>
+
+  <script>
+    async function main() {
+      const payments = Square.payments(
+        "YOUR_APPLICATION_ID",
+        "YOUR_LOCATION_ID"
+      );
+
+      const card = await payments.card();
+      await card.attach("#card-container");
+
+      document.getElementById("pay-btn").onclick = async () => {
+        const result = await card.tokenize();
+
+        if (result.status === "OK") {
+          // Send token to backend
+          const res = await fetch("/pay", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: result.token })
+          });
+
+          const data = await res.json();
+          console.log(data);
+          alert("Payment complete!");
+        } else {
+          alert("Card error: " + result.status);
+        }
+      };
+    }
+
+    main();
+  </script>
+
+</body>
+</html>
