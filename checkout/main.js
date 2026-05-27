@@ -3,7 +3,11 @@ async function CreateCheckout() {
         let response = await fetch("/api/createcheckout", {
             method: "POST"
         });
-        let data = await response.json();
+        const rawText = await response.text();
+        console.log("Raw Server Response:", rawText);
+
+        let data = JSON.parse(rawText);
+        
         if (data.url) {
             console.log("Redirecting to Square:", data.url);
             window.location.href = data.url;
@@ -15,4 +19,3 @@ async function CreateCheckout() {
         console.error("Something went wrong with the fetch:", error);
     }
 }
-CreateCheckout();
