@@ -19,3 +19,5 @@ async function CreateCheckout() {
         console.error("Something went wrong with the fetch:", error);
     }
 }
+
+CreateCheckout();
