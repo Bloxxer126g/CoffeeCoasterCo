@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   const { sourceId, amount } = req.body;
 
   try {
-    const response = await fetch('https://connect.squareup.com/v2/payments', {
+    const response = await fetch('https://connect.squareupsandbox.com/v2/payments', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
