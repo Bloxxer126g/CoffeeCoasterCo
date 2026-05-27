@@ -20,7 +20,7 @@ async function createDetailedCheckout() {
       ]
     },
     "checkout_options": {
-      "redirect_url": `jamton.bloxxer.dev/success`,
+      "redirect_url": `https://jamton.bloxxer.dev/success`,
       "allow_tipping": true,
       "ask_for_shipping_address": true
     }
