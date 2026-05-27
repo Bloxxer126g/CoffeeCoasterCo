@@ -1,7 +1,10 @@
 const appId = 'sq0idp-0FgQw4W25RfCW8EvmceRMw';
 const locationId = 'LQ69R2E9RR9R9'; 
 
+console.log("main.js running")
+
 async function init() {
+  console.log("Init running");
   const statusDiv = document.getElementById('payment-status');
   
   if (!window.Square) {
