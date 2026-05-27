@@ -3,27 +3,37 @@ async function DisplayItems() {
     let Response = await Items.json();
 
     Response.Items.forEach(element => {
-        let ShownItem = document.createElement("img");
-        ShownItem.src = element.Image;
-        ShownItem.classList = "Product";
-        ShownItem.id = element.Name;
-        let AddedCart = document.createElement("p")
-        AddedCart.classList = "AddedCart"
-        AddedCart.id = `${element.Name}_AddedCart`
-        AddedCart.innerHTML = ""
-        document.getElementById("Items").appendChild(ShownItem);
-        ShownItem.appendChild(AddedCart)
-        console.log(element.Name);
-        console.log(element.Cost);
-        console.log(element.Image);
+    let ProductWrapper = document.createElement("div");
+    ProductWrapper.className = "ProductContainer";
+    let ShownItem = document.createElement("img");
+    ShownItem.src = element.Image;
+    ShownItem.classList = "Product";
+    ShownItem.id = element.Name;
+    let AddedCart = document.createElement("p");
+    AddedCart.classList = "AddedCart";
+    AddedCart.id = `${element.Name}_AddedCart`;
+    AddedCart.innerHTML = "";
+    ProductWrapper.appendChild(ShownItem);
+    ProductWrapper.appendChild(AddedCart);
+    document.getElementById("Items").appendChild(ProductWrapper);
 
-        ShownItem.addEventListener("click", event => {
-            AddedCart.innerHTML = "Added To Cart!"
-            setTimeout(event => {
-                AddedCart.innerHTML = ""
-            }, 400)
-        })
+    ShownItem.addEventListener("click", () => {
+        AddedCart.innerHTML = "Added To Cart!";
+        let Cart = localStorage.getItem("Cart");
+        console.log(Cart);
+        let Table = [];
+        Cart.split(",").forEach(element => {
+            Table.splice(1, 0, element);
+        });
+        Cart = Table;
+        Cart.splice(1, 0, element.Name);
+        localStorage.setItem("Cart", Cart);
+        console.log(Cart)
+        setTimeout(() => {
+            AddedCart.innerHTML = "";
+        }, 400);
     });
+});
 
     
 }
