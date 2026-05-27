@@ -10,13 +10,13 @@ export default async function handler(req, res) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.SANDBOX_ACCESS}`,
+        'Authorization': `Bearer ${process.env.PAYMENT_ACCESS}`,
         'Square-Version': '2026-03-18'
       },
       body: JSON.stringify({
-        sourceId: sourceId,
-        idempotencyKey: crypto.randomUUID(),
-        amountMoney: {
+        source_id: sourceId,
+        idempotency_key: crypto.randomUUID(),
+        amount_money: {
           amount: amount,
           currency: 'GBP'
         }
