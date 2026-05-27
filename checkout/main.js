@@ -1,6 +1,6 @@
 async function CreateCheckout() {
     try {
-        let response = await fetch("/api/createcheckout", {
+        let response = await fetch("/api/createcheckout.js", {
             method: "POST"
         });
         let data = await response.json();
