@@ -14,9 +14,9 @@ export default async function handler(request, response) {
 }
 
 async function createDetailedCheckout() {
-  const SQUARE_API_URL = 'https://connect.squareupsandbox.com/v2/online-checkout/payment-links';
-  const ACCESS_TOKEN = process.env.SANDBOX_ACCESS; 
-  const LOCATION_ID = "LBKW9Y07HJT7B";
+  const SQUARE_API_URL = 'https://connect.squareup.com/v2/online-checkout/payment-links';
+  const ACCESS_TOKEN = process.env.PAYMENT_ACCESS; 
+  const LOCATION_ID = "LQ69R2E9RR9R9";
   
   const payload = {
     "idempotency_key": crypto.randomUUID(), 
