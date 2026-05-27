@@ -1,10 +1,15 @@
-import { NextResponse } from 'next/server';
-export async function POST(request) {
+export default async function handler(request, response) {
+  if (request.method !== 'POST') {
+    response.setHeader('Allow', ['POST']);
+    return response.status(405).end(`Method ${request.method} Not Allowed`);
+  }
+
   try {
     const checkoutUrl = await createDetailedCheckout();
-    return NextResponse.json({ url: checkoutUrl });
+
+    return response.status(200).json({ url: checkoutUrl });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return response.status(500).json({ error: error.message });
   }
 }
 
@@ -14,7 +19,7 @@ async function createDetailedCheckout() {
   const LOCATION_ID = "LBKW9Y07HJT7B";
   
   const payload = {
-    "idempotency_key": crypto.randomUUID(),
+    "idempotency_key": crypto.randomUUID(), 
     "order": {
       "location_id": LOCATION_ID,
       "line_items": [
@@ -35,28 +40,21 @@ async function createDetailedCheckout() {
     }
   };
 
-  try {
-    const response = await fetch(SQUARE_API_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${ACCESS_TOKEN}`,
-        'Content-Type': 'application/json',
-        'Square-Version': '2025-04-16'
-      },
-      body: JSON.stringify(payload)
-    });
+  const res = await fetch(SQUARE_API_URL, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${ACCESS_TOKEN}`,
+      'Content-Type': 'application/json',
+      'Square-Version': '2025-04-16'
+    },
+    body: JSON.stringify(payload)
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Square API Error Details:', errorData);
-      throw new Error(`Square API responded with status ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data.payment_link.url;
-
-  } catch (error) {
-    console.error('Failed to create Square checkout session:', error);
-    throw error;
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.errors?.[0]?.detail || 'Square API Error');
   }
+
+  const data = await res.json();
+  return data.payment_link.url;
 }
