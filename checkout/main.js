@@ -1,5 +1,5 @@
-const appId = 'sq0idp-0FgQw4W25RfCW8EvmceRMw';
-const locationId = 'LQ69R2E9RR9R9'; 
+const appId = 'sandbox-sq0idb-Qiv7AsASUnLyalrbfcjVxw';
+const locationId = 'LBKW9Y07HJT7B'; 
 
 async function init() {
   if (!window.Square) {
@@ -22,7 +22,7 @@ async function init() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           sourceId: result.token,
-          amount: 1000
+          amount: 10
         })
       });
       
