@@ -1,51 +1,18 @@
-const appId = 'sandbox-sq0idb-Qiv7AsASUnLyalrbfcjVxw';
-const locationId = 'LBKW9Y07HJT7B'; 
+async function CreateCheckout() {
+    try {
+        let response = await fetch("/api/create-checkout", {
+            method: "POST"
+        });
+        let data = await response.json();
+        if (data.url) {
+            console.log("Redirecting to Square:", data.url);
+            window.location.href = data.url;
+        } else {
+            console.error("Backend didn't return a URL:", data);
+        }
 
-async function init() {
-  if (!window.Square) {
-    throw new Error('Square.js failed to load');
-  }
-
-  const payments = window.Square.payments(appId, locationId);
-  const card = await payments.card();
-  await card.attach('#card-container');
-
-  const cardButton = document.getElementById('card-button');
-  
-  cardButton.addEventListener('click', async () => {
-  const emailInput = document.getElementById('buyer-email');
-
-  if (!emailInput.value || !emailInput.checkValidity()) {
-    document.getElementById('payment-status').innerText = "Please enter a valid email address.";
-    return;
-  }
-
-  cardButton.disabled = true;
-  const result = await card.tokenize();
-  
-  if (result.status === 'OK') {
-    const response = await fetch('/api/charge', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        sourceId: result.token,
-        amount: 500,
-        email: emailInput.value // <-- Pass the email here
-      })
-    });
-    
-    const paymentResult = await response.json();
-    if (paymentResult.success) {
-      document.getElementById('payment-status').innerText = "Payment Successful!";
-    } else {
-      document.getElementById('payment-status').innerText = "Payment Failed.";
-      cardButton.disabled = false;
+    } catch (error) {
+        console.error("Something went wrong with the fetch:", error);
     }
-  } else {
-    document.getElementById('payment-status').innerText = "Tokenization failed.";
-    cardButton.disabled = false;
-  }
-});
 }
-
-init();
+CreateCheckout();
