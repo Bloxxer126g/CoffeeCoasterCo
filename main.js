@@ -1,5 +1,5 @@
 async function DisplayItems() {
-    let Items = await fetch("/public/items.json");
+    let Items = await fetch("/data/items.json");
     let Response = await Items.json();
 
     Response.Items.forEach(element => {
