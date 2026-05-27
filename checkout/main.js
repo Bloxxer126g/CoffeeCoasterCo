@@ -23,4 +23,4 @@ async function init() {
   }
 }
 
-init();
+document.addEventListener("DOMContentLoaded", init)
