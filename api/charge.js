@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { sourceId, amount } = req.body;
+  const { sourceId, amount, email } = req.body;
 
   try {
     const response = await fetch('https://connect.squareupsandbox.com/v2/payments', {
@@ -19,7 +19,8 @@ export default async function handler(req, res) {
         amount_money: {
           amount: amount,
           currency: 'GBP'
-        }
+        },
+        buyer_email_address: email 
       })
     });
 
