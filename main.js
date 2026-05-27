@@ -18,9 +18,9 @@ async function DisplayItems() {
         console.log(element.Image);
 
         ShownItem.addEventListener("click", event => {
-            document.getElementById(`${element.id}_AddedCart`).innerHTML = "Added To Cart!"
+            AddedCart.innerHTML = "Added To Cart!"
             setTimeout(event => {
-                document.getElementById(`${element.id}_AddedCart`).innerHTML = ""
+                AddedCart.innerHTML = ""
             }, 400)
         })
     });
