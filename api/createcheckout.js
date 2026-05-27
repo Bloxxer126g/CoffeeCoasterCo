@@ -1,11 +1,20 @@
-import crypto from 'crypto';
+import { NextResponse } from 'next/server';
+export async function POST(request) {
+  try {
+    const checkoutUrl = await createDetailedCheckout();
+    return NextResponse.json({ url: checkoutUrl });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
 
 async function createDetailedCheckout() {
   const SQUARE_API_URL = 'https://connect.squareupsandbox.com/v2/online-checkout/payment-links';
   const ACCESS_TOKEN = process.env.SANDBOX_ACCESS; 
   const LOCATION_ID = "LBKW9Y07HJT7B";
+  
   const payload = {
-    "idempotency_key": crypto.randomUUID(), 
+    "idempotency_key": crypto.randomUUID(),
     "order": {
       "location_id": LOCATION_ID,
       "line_items": [
@@ -32,7 +41,7 @@ async function createDetailedCheckout() {
       headers: {
         'Authorization': `Bearer ${ACCESS_TOKEN}`,
         'Content-Type': 'application/json',
-        'Square-Version': '2026-05-27'
+        'Square-Version': '2025-04-16'
       },
       body: JSON.stringify(payload)
     });
@@ -44,10 +53,7 @@ async function createDetailedCheckout() {
     }
 
     const data = await response.json();
-
-    const checkoutUrl = data.payment_link.url;
-    console.log('Checkout Link Created:', checkoutUrl);
-    return checkoutUrl;
+    return data.payment_link.url;
 
   } catch (error) {
     console.error('Failed to create Square checkout session:', error);
