@@ -47,8 +47,6 @@ async function createDetailedCheckout(Table) {
     if (FoundExistingItem !== null) {
       let newQuantity = parseInt(FoundExistingItem.quantity) + 1;
       FoundExistingItem.quantity = newQuantity.toString();
-
-      FoundExistingItem.base_price_money.amount = FoundExistingItem.Cost * newQuantity;
     } else {
       let Found = null;
       Response.Items.forEach(item => {

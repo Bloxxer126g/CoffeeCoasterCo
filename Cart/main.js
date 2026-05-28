@@ -3,6 +3,15 @@ async function DisplayCart() {
     let Table = []; 
     const itemsContainer = document.getElementById("Items");
     if (itemsContainer) itemsContainer.innerHTML = "";
+    
+    function formatPrice(totalPence) {
+        if (totalPence < 100) {
+            return `${totalPence}p`;
+        } else {
+            const pounds = totalPence / 100;
+            return `£${pounds.toFixed(2)}`; 
+        }
+    }
 
     if (Cart == null || Cart.trim() === "") {
         const emptyElement = document.getElementById("Empty");
@@ -68,7 +77,8 @@ async function DisplayCart() {
             let ItemString = document.createElement("p");
             itemsContainer.appendChild(ItemString);
             ItemString.classList = "ItemsText";
-            ItemString.innerHTML = `${element.Name} x${element.Amount} - ${(element.Cost * element.Amount)}p`;
+            const totalCost = element.Cost * element.Amount;
+            ItemString.innerHTML = `${element.Name} x${element.Amount} - ${formatPrice(totalCost)}`;
 
             ItemString.addEventListener("click", () => {
                 let currentCartArray = localStorage.getItem("Cart").split(",");
