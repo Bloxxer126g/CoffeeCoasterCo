@@ -18,7 +18,7 @@ async function createDetailedCheckout() {
   const ACCESS_TOKEN = process.env.PAYMENT_ACCESS; 
   const LOCATION_ID = "LQ69R2E9RR9R9";
 
-    let Items = await fetch("/data/items.json");
+    let Items = await fetch("https://jamton.bloxxer.dev/data/items.json");
     let Response = await Items.json();
 
     let CurrentItems = []
