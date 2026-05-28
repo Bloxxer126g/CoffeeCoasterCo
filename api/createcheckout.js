@@ -66,7 +66,7 @@ async function createDetailedCheckout(Table) {
         name: element,
         Cost: Found.Cost,
         base_price_money: {
-          amount: Found.Cost * itemQuantity, 
+          amount: Found.Cost, 
           currency: "GBP",
         },
         quantity: itemQuantity.toString(), 
@@ -76,7 +76,7 @@ async function createDetailedCheckout(Table) {
     }
   });
 
-  const cleanedLineItems = CurrentItems.map(({name, base_price_money, quantity}) => ({
+  const LineItems = CurrentItems.map(({name, base_price_money, quantity}) => ({
     name,
     base_price_money,
     quantity
@@ -86,7 +86,7 @@ async function createDetailedCheckout(Table) {
     "idempotency_key": crypto.randomUUID(), 
     "order": {
       "location_id": LOCATION_ID,
-      "line_items": cleanedLineItems
+      "line_items": LineItems
     },
     "checkout_options": {
       "redirect_url": `https://jamton.bloxxer.dev/success`,
