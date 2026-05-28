@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 export default async function handler(request, response) {
   if (request.method !== 'POST') {
     response.setHeader('Allow', ['POST']);
@@ -5,72 +7,86 @@ export default async function handler(request, response) {
   }
 
   try {
-    const checkoutUrl = await createDetailedCheckout();
+    const rawCartString = request.body || "";
+
+    let Table = [];
+    if (rawCartString.trim() !== "") {
+      rawCartString.split(",").forEach(element => {
+        if (element) Table.splice(1, 0, element);
+      });
+    }
+
+    const checkoutUrl = await createDetailedCheckout(Table);
 
     return response.status(200).json({ url: checkoutUrl });
   } catch (error) {
+    console.error("Backend Error Details:", error);
     return response.status(500).json({ error: error.message });
   }
 }
 
-async function createDetailedCheckout() {
+async function createDetailedCheckout(Table) {
   const SQUARE_API_URL = 'https://connect.squareup.com/v2/online-checkout/payment-links';
   const ACCESS_TOKEN = process.env.PAYMENT_ACCESS; 
   const LOCATION_ID = "LQ69R2E9RR9R9";
 
-    let Items = await fetch("https://jamton.bloxxer.dev/data/items.json");
-    let Response = await Items.json();
+  let Items = await fetch("https://jamton.bloxxer.dev/data/items.json");
+  let Response = await Items.json();
 
-    let CurrentItems = []
+  let CurrentItems = [];
 
-    Table.forEach(element => {
-        let Index
-        CurrentItems.forEach(CItem => {
-            if (CItem.Name == element) {
-                Index = CItem.Index;
-            };
-        });
-        if (Index != null) {
+  Table.forEach(element => {
+    let FoundExistingItem = null;
 
-            CurrentItems.forEach(CItem => {
-                if (CItem.Name == element) {
-                    CItem.quantity += 1;
-                };
-            });
-
-        } else {
-            let Found = null
-            Response.Items.forEach(item => {
-                if (item.Name == element) {
-                    Found = item;
-                }
-            });
-            if (Found == null) {
-                const index = Table.indexOf(Table, element);
-                Table.splice(index, 1);
-                return false;
-            }
-
-            DataTable = {
-                name: element,
-                Index: CurrentItems.length + 1,
-                Cost: Found.Cost,
-                base_price_money: {
-                  amount: DataTable.Cost * DataTable.quantity,
-                  currency: "GBP",
-                },
-                quantity: 1,
-            }
-
-            CurrentItems.splice(1, 0, DataTable);
-        }
+    CurrentItems.forEach(CItem => {
+      if (CItem.name === element) {
+        FoundExistingItem = CItem;
+      }
     });
+
+    if (FoundExistingItem !== null) {
+      let newQuantity = parseInt(FoundExistingItem.quantity) + 1;
+      FoundExistingItem.quantity = newQuantity.toString();
+
+      FoundExistingItem.base_price_money.amount = FoundExistingItem.Cost * newQuantity;
+    } else {
+      let Found = null;
+      Response.Items.forEach(item => {
+        if (item.Name === element) {
+          Found = item;
+        }
+      });
+
+      if (Found == null) {
+        return;
+      }
+
+      let itemQuantity = 1;
+      let DataTable = {
+        name: element,
+        Cost: Found.Cost,
+        base_price_money: {
+          amount: Found.Cost * itemQuantity, 
+          currency: "GBP",
+        },
+        quantity: itemQuantity.toString(), 
+      };
+
+      CurrentItems.push(DataTable);
+    }
+  });
+
+  const cleanedLineItems = CurrentItems.map(({name, base_price_money, quantity}) => ({
+    name,
+    base_price_money,
+    quantity
+  }));
   
   const payload = {
     "idempotency_key": crypto.randomUUID(), 
     "order": {
       "location_id": LOCATION_ID,
-      "line_items": CurrentItems
+      "line_items": cleanedLineItems
     },
     "checkout_options": {
       "redirect_url": `https://jamton.bloxxer.dev/success`,
