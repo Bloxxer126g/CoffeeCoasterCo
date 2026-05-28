@@ -92,3 +92,8 @@ h1,h2,h3,h4,p,div,button{
   font-size: 70%;
   z-index: 10;
 }
+
+.ItemsText:hover {
+    color: red;
+    text-decoration: line-through;
+}

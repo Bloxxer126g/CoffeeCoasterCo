@@ -1,9 +1,13 @@
 async function DisplayCart() {
     let Cart = localStorage.getItem("Cart");
     let Table = []; 
-    
-    if (Cart == null) {
-        Cart = "";
+    const itemsContainer = document.getElementById("Items");
+    if (itemsContainer) itemsContainer.innerHTML = "";
+
+    if (Cart == null || Cart.trim() === "") {
+        const emptyElement = document.getElementById("Empty");
+        if (emptyElement) emptyElement.innerHTML = "Cart Is Empty!";
+        return;
     } else {
         const emptyElement = document.getElementById("Empty");
         if (emptyElement) emptyElement.innerHTML = "";
@@ -59,16 +63,22 @@ async function DisplayCart() {
 
     console.log(CurrentItems);
 
-    const itemsContainer = document.getElementById("Items");
     if (itemsContainer) {
         CurrentItems.forEach(element => {
             let ItemString = document.createElement("p");
             itemsContainer.appendChild(ItemString);
+            ItemString.classList = "ItemsText";
             ItemString.innerHTML = `${element.Name} x${element.Amount} - ${(element.Cost * element.Amount)}p`;
+
+            ItemString.addEventListener("click", () => {
+                let currentCartArray = localStorage.getItem("Cart").split(",");
+                let updatedCartArray = currentCartArray.filter(cartItem => cartItem !== element.Name);
+                localStorage.setItem("Cart", updatedCartArray.join(","));
+
+                DisplayCart();
+            });
         });
     }
 }
-
-DisplayCart();
 
 DisplayCart();
