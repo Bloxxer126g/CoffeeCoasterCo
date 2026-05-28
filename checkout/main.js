@@ -1,7 +1,8 @@
 async function CreateCheckout() {
     try {
         let response = await fetch("/api/createcheckout", {
-            method: "POST"
+            method: "POST",
+            body: localStorage.getItem("Cart")
         });
         const rawText = await response.text();
         console.log("Raw Server Response:", rawText);

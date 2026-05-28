@@ -20,6 +20,9 @@ async function DisplayItems() {
     ShownItem.addEventListener("click", () => {
         AddedCart.innerHTML = "Added To Cart!";
         let Cart = localStorage.getItem("Cart");
+        if (Cart == null) {
+            Cart = ""
+        }
         console.log(Cart);
         let Table = [];
         Cart.split(",").forEach(element => {

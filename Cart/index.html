@@ -5,14 +5,14 @@
 
     <link href="https://api.fontshare.com/v2/css?f[]=plein@1&display=swap" rel="stylesheet"> 
 
-    <link href="/styles.css" rel="stylesheet">
-    <script src="/cart/main.js" defer></script>
+    <link href="styles.css" rel="stylesheet">
+    <script src="main.js" defer></script>
 
     <title>Cart</title>
 </head>
 <body>
     <div id="Topbar">
-        <p id="Title">JamTon!</p>
+        <p id="Title" onclick="location.href='/'">JamTon!</p>
         <button class="TopbarNavigator" id="CheckoutButton"  onclick="location.href='/checkout'">
             Checkout
         </button>
@@ -21,7 +21,8 @@
         </button>
     </div>
     <div id="CenterContent">
-        <p id="CenterTitle">Lorem ipsum dolor sit amet</p>
+        <p id="CenterTitle">Cart</p>
+        <p id="Empty">Cart Is Empty!</p>
         <div id="Items"></div>
     </div>
 </body>
