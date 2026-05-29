@@ -24,3 +24,15 @@ h1,h2,h3,h4,p,div,button{
 #LoadingText {
     z-index: 999;
 }
+
+#CheckoutFrame {
+    width: 80%;
+    height: 80%;
+    left: 50%;
+    top: 70%;
+    transform: translate(-50%, -70%);
+    position: fixed;
+    z-index: 999;
+    border: none;
+    border-radius: 0.8rem;
+}
